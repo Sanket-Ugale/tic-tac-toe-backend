@@ -16,17 +16,17 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+from dotenv import load_dotenv
+load_dotenv()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-piz#a@6!-ljgzmncbovpk1=h1bd3_%kyvly3$lkubu9^oz!pk1"
+SECRET_KEY = os.getenv('SECRET_KEY', 'defaultsecretkey') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ["*"]
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', 'localhost')]
 
 AUTH_USER_MODEL='authenticate.User'
 # Application definition
@@ -142,11 +142,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    os.getenv('DOMAIN1'),
+    os.getenv('DOMAIN2'),
     "http://127.0.0.1:8000",
     "http://192.168.1.15:3000"
 ]
 CSRF_TRUSTED_ORIGINS = [
+    os.getenv('DOMAIN1'),
+    os.getenv('DOMAIN2'),
     "http://localhost:3000",
     "http://192.168.1.15:3000",
     "http://127.0.0.1:8000",
@@ -212,20 +215,16 @@ SIMPLE_JWT = {
 }
 
 # EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST= 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'edummy946@gmail.com'
-EMAIL_HOST_PASSWORD = 'laki tcni gyrk nhqn'
-# EMAIL_HOST= os.getenv('EMAIL_HOST')
-# EMAIL_PORT = os.getenv('EMAIL_PORT')
-# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST= os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
 # Celery Settings 
 # red-cmt7vqn109ks73a3pu4g
-CELERY_BROKER_URL= os.getenv('REDIS_URL', 'redis://:REDIS_PASSWORD@localhost:6379/0')
-CELERY_RESULT_BACKEND = os.getenv('REDIS_URL', 'redis://:REDIS_PASSWORD@localhost:6379/0')
+CELERY_BROKER_URL= os.getenv('REDIS_URL', 'redis://:localhost:6379/0')
+CELERY_RESULT_BACKEND = os.getenv('REDIS_URL', 'redis://:localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER ='json'
 CELERY_TASK_SELERLIZER = 'json'
@@ -240,7 +239,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": ['redis://:REDIS_PASSWORD@localhost:6379/0'],
+            "hosts": [ os.getenv('REDIS_URL')],
         },
     },
 }
