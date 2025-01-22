@@ -34,7 +34,7 @@ This is the backend for a Tic-Tac-Toe game built using Django Rest Framework. Th
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/tic-tac-toe-backend.git
+   git clone https://github.com/Sanket-Ugale/tic-tac-toe-backend.git
    cd tic-tac-toe-backend
    ```
 
